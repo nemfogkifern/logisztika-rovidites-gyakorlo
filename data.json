@@ -1,0 +1,344 @@
+[
+  {
+    "rovidit": "3PL",
+    "kifejez": "Third-Party Logistics",
+    "megjegyz": "külső logisztikai szolgáltató",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "4PL",
+    "kifejez": "Fourth-Party Logistics",
+    "megjegyz": "integrált logisztikai szolgáltató, több szolgáltató koordinálása",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "5PL",
+    "kifejez": "Fifth-Party Logistics",
+    "megjegyz": "hálózati, digitálisan integrált logisztikai szolgáltatás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ABC",
+    "kifejez": "Activity-Based Costing",
+    "megjegyz": "tevékenységalapú költségszámítás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ABC",
+    "kifejez": "ABC Analysis",
+    "megjegyz": "készletek érték/fontosság szerinti osztályozása",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ADR",
+    "kifejez": "Accord européen relatif au transport international des marchandises Dangereuses par Route",
+    "megjegyz": "Veszélyes áru szállítása / Közút",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "AGV",
+    "kifejez": "Automated Guided Vehicle",
+    "megjegyz": "automatikusan vezetett anyagmozgató jármű",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "AI",
+    "kifejez": "Artificial Intelligence",
+    "megjegyz": "mesterséges intelligencia",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "AMR",
+    "kifejez": "Autonomous Mobile Robot",
+    "megjegyz": "autonóm mobil robot",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "APS",
+    "kifejez": "Advanced Planning and Scheduling",
+    "megjegyz": "fejlett termelés- és kapacitástervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "AS/RS",
+    "kifejez": "Automated Storage and Retrieval System",
+    "megjegyz": "automatikus tároló- és kitárolórendszer",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ASN",
+    "kifejez": "Advanced Shipping Notice",
+    "megjegyz": "előzetes szállítási értesítés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ATO",
+    "kifejez": "Assemble to Order",
+    "megjegyz": "rendelésre összeszerelés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "ATP",
+    "kifejez": "Available to Promise",
+    "megjegyz": "vevőnek ígérhető mennyiség",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "B2B",
+    "kifejez": "Business-to-Business",
+    "megjegyz": "vállalatok közötti kereskedelem",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "B2C",
+    "kifejez": "Business-to-Consumer",
+    "megjegyz": "vállalat és végfogyasztó közötti kereskedelem",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "BILK",
+    "kifejez": "Budapesti Intermodális Logisztikai Központ",
+    "megjegyz": "",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "BOM",
+    "kifejez": "Bill of Materials",
+    "megjegyz": "darabjegyzék, anyagjegyzék",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "BSC",
+    "kifejez": "Balanced Scorecard",
+    "megjegyz": "kiegyensúlyozott stratégiai mutatószámrendszer",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "BTO",
+    "kifejez": "Build to Order",
+    "megjegyz": "rendelésre történő gyártás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CAD",
+    "kifejez": "Computer-Aided Design",
+    "megjegyz": "számítógéppel támogatott tervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CAM",
+    "kifejez": "Computer-Aided Manufacturing",
+    "megjegyz": "számítógéppel támogatott gyártás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CAPEX",
+    "kifejez": "Capital Expenditure",
+    "megjegyz": "beruházási kiadás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CAPP",
+    "kifejez": "Computer Aided Production Planning",
+    "megjegyz": "számítógépes termeléstervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CAQ",
+    "kifejez": "Computer Aided Quality Control",
+    "megjegyz": "számítógéppel támogatott minőség-ellenőrzés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CBM",
+    "kifejez": "Cubic Meter",
+    "megjegyz": "köbméter; szállítási térfogat",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CD",
+    "kifejez": "Cross Docking",
+    "megjegyz": "átrendező terminálnak (virtuális raktár)",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CEP",
+    "kifejez": "Courier - Express - Parcel",
+    "megjegyz": "futár-expressz-csomagküldő szolgáltatás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CFS",
+    "kifejez": "Container Freight Station",
+    "megjegyz": "konténeres gyűjtő-/rakodóállomás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CIF",
+    "kifejez": "Cost, Insurance and Freight",
+    "megjegyz": "Incoterms klauzula",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CIL",
+    "kifejez": "Computer Integrated Logistics",
+    "megjegyz": "számítógéppel integrált logisztikai rendszerek",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CIM",
+    "kifejez": "Computer Integrated Manufacturing",
+    "megjegyz": "számítógéppel integrált gyártás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CMI",
+    "kifejez": "Co-Managed Inventory",
+    "megjegyz": "beszállítóval közösen menedzselt készletek",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CNC",
+    "kifejez": "Computer Numerical Control",
+    "megjegyz": "számítógépes numerikus vezérlés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CO₂e",
+    "kifejez": "Carbon Dioxide Equivalent",
+    "megjegyz": "szén-dioxid-egyenérték",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "COGS",
+    "kifejez": "Cost of Goods Sold",
+    "megjegyz": "értékesített termékek költsége",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CONWIP",
+    "kifejez": "Constant Work in Progress",
+    "megjegyz": "húzásorientált (pull) gyártásirányítási rendszer",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CPFR",
+    "kifejez": "Collaborative Planning, Forecasting and Replenishment",
+    "megjegyz": "együttműködésen alapuló tervezés, előrejelzés és utánpótlás",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CPM",
+    "kifejez": "Critical Path Method",
+    "megjegyz": "kritikus út módszere",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CR",
+    "kifejez": "Continuouos Replenishment",
+    "megjegyz": "folyamatos feltöltés (utántöltés)",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CR",
+    "kifejez": "Critical Ratio",
+    "megjegyz": "kritikus ráta; termelési prioritási szabály",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CRP",
+    "kifejez": "Capacity Requirements Planning",
+    "megjegyz": "kapacitásszükséglet-tervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CRP",
+    "kifejez": "Continuous Replenishment Program",
+    "megjegyz": "folyamatos utánpótlási program",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CT",
+    "kifejez": "Cycle Time",
+    "megjegyz": "ciklusidő",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "CTP",
+    "kifejez": "Capable to Promise",
+    "megjegyz": "kapacitás alapján ígérhető mennyiség",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DC",
+    "kifejez": "Distribution Center",
+    "megjegyz": "elosztóközpont",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DDMRP",
+    "kifejez": "Demand Driven Material Requirements Planning",
+    "megjegyz": "keresetvezérelt anyagszükséglet-tervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DIO",
+    "kifejez": "Days Inventory Outstanding",
+    "megjegyz": "készletben állás átlagos napjainak száma",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DMS",
+    "kifejez": "Dock Management System",
+    "megjegyz": "rakodókapu-kezelő rendszer",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DOH",
+    "kifejez": "Days on Hand",
+    "megjegyz": "készletfedezet napokban",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DRP",
+    "kifejez": "Distribution Resource Planning",
+    "megjegyz": "disztribúciós erőforrás-tervezési rendszer",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "DRP II",
+    "kifejez": "Distribution Resource Planning",
+    "megjegyz": "elosztási erőforrás-tervezés",
+    "szin": "Piros"
+  },
+  {
+    "rovidit": "EAN",
+    "kifejez": "European Article Number",
+    "megjegyz": "termékazonosítási rendszer; ma GTIN-rendszer részeként használatos",
+    "szin": "Narancssárga"
+  },
+  {
+    "rovidit": "ECR",
+    "kifejez": "Efficient Consumer Response",
+    "megjegyz": "hatékony fogyasztói válasz",
+    "szin": "Narancssárga"
+  },
+  {
+    "rovidit": "EDD",
+    "kifejez": "Earliest Due Date",
+    "megjegyz": "legkorábbi határidő szerinti prioritás",
+    "szin": "Narancssárga"
+  },
+  {
+    "rovidit": "EDI",
+    "kifejez": "Electronic Data Interchange",
+    "megjegyz": "elektronikus adatcsere",
+    "szin": "Narancssárga"
+  },
+  {
+    "rovidit": "EDIFACT",
+    "kifejez": "Electronic Data Interchange for Administration, Commerce and Transport",
+    "megjegyz": "szabványos elektronikus adatcsere",
+    "szin": "Narancssárga"
+  }
+]

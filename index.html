@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LogRövid">
+<title>Logisztikai Rövidítések</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+/* ===== CSS RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #253347;
+  --border: #334155;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-glow: rgba(59,130,246,0.3);
+  --success: #22c55e;
+  --success-bg: rgba(34,197,94,0.15);
+  --error: #ef4444;
+  --error-bg: rgba(239,68,68,0.15);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245,158,11,0.15);
+  --color-piros: #ef4444;
+  --color-piros-bg: rgba(239,68,68,0.12);
+  --color-narancs: #f97316;
+  --color-narancs-bg: rgba(249,115,22,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ===== SCREEN SYSTEM ===== */
+.screen { display: none; min-height: 100dvh; flex-direction: column; animation: fadeIn 0.3s ease; }
+.screen.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ===== HEADER ===== */
+.header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,23,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.header-back {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text); font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: var(--transition); flex-shrink: 0;
+}
+.header-back:active { background: var(--surface2); transform: scale(0.92); }
+.header-title { font-size: 17px; font-weight: 700; flex: 1; }
+.header-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+.header-badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 13px; font-weight: 600;
+}
+
+/* ===== SCROLL CONTAINER ===== */
+.scroll-body { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
+.scroll-body::-webkit-scrollbar { width: 3px; }
+.scroll-body::-webkit-scrollbar-track { background: transparent; }
+.scroll-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ===== HOME SCREEN ===== */
+.home-hero {
+  padding: 32px 16px 24px;
+  text-align: center;
+}
+.home-logo {
+  width: 80px; height: 80px; border-radius: 20px;
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 8px 32px rgba(59,130,246,0.4);
+  animation: pulse-logo 3s ease-in-out infinite;
+}
+@keyframes pulse-logo {
+  0%, 100% { box-shadow: 0 8px 32px rgba(59,130,246,0.4); }
+  50% { box-shadow: 0 8px 48px rgba(59,130,246,0.7); }
+}
+.home-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.home-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 10px;
+  padding: 0 16px 20px;
+}
+.stat-card {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 8px;
+  text-align: center;
+}
+.stat-num { font-size: 22px; font-weight: 800; color: var(--primary); }
+.stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* Menu items */
+.menu-section { padding: 0 16px; margin-bottom: 8px; }
+.menu-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; padding-left: 4px; }
+.menu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.menu-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 1px solid var(--border);
+  -webkit-tap-highlight-color: transparent;
+}
+.menu-item:last-child { border-bottom: none; }
+.menu-item:active { background: var(--surface2); }
+.menu-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.menu-icon.blue { background: rgba(59,130,246,0.15); }
+.menu-icon.green { background: rgba(34,197,94,0.15); }
+.menu-icon.purple { background: rgba(168,85,247,0.15); }
+.menu-icon.amber { background: rgba(245,158,11,0.15); }
+.menu-icon.teal { background: rgba(20,184,166,0.15); }
+.menu-text { flex: 1; }
+.menu-text h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.menu-text p { font-size: 12px; color: var(--text-muted); }
+.menu-arrow { color: var(--text-dim); font-size: 18px; }
+.menu-badge {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 11px; font-weight: 700;
+  margin-right: 4px;
+}
+
+/* ===== SETTINGS MODAL / PANEL ===== */
+.settings-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.settings-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-row label { flex: 1; font-size: 14px; font-weight: 600; }
+.settings-row small { display: block; font-size: 12px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+
+/* Toggle */
+.toggle {
+  position: relative;
+  display: block;
+  width: 48px; height: 26px; flex-shrink: 0;
+}
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute; inset: 0;
+  background: var(--border);
+  border-radius: 13px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  top: 3px; left: 3px;
+  transition: var(--transition);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.toggle input:checked + .toggle-slider { background: var(--primary); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+/* Range */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Chip selector */
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-muted);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.chip.selected {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  color: var(--primary);
+}
+.chip.piros.selected { border-color: var(--color-piros); background: var(--color-piros-bg); color: var(--color-piros); }
+.chip.narancs.selected { border-color: var(--color-narancs); background: var(--color-narancs-bg); color: var(--color-narancs); }
+
+/* ===== QUIZ SCREEN ===== */
+.progress-bar-wrap {
+  padding: 10px 16px 0;
+  position: relative;
+}
+.progress-bar-bg {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #818cf8);
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-info {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text-muted);
+  margin-top: 6px; margin-bottom: 4px;
+}
+
+/* Question card */
+.question-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 200px; height: 80px;
+  background: var(--primary-glow);
+  border-radius: 50%;
+  filter: blur(30px);
+}
+.question-color-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+.question-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.question-abbr {
+  font-size: 36px; font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+  position: relative;
+}
+.question-note { font-size: 12px; color: var(--text-dim); margin-top: 8px; font-style: italic; }
+
+/* Answer options */
+.options-grid {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.option-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--text);
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex; align-items: center; gap: 12px;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.3;
+}
+.option-btn:active:not(:disabled) { transform: scale(0.98); }
+.option-letter {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.option-btn.correct {
+  border-color: var(--success);
+  background: var(--success-bg);
+  animation: bounceCorrect 0.4s ease;
+}
+.option-btn.correct .option-letter { background: var(--success); border-color: var(--success); color: #fff; }
+.option-btn.wrong {
+  border-color: var(--error);
+  background: var(--error-bg);
+  animation: shakeWrong 0.4s ease;
+}
+.option-btn.wrong .option-letter { background: var(--error); border-color: var(--error); color: #fff; }
+.option-btn.reveal {
+  border-color: var(--success);
+  background: var(--success-bg);
+  opacity: 0.6;
+}
+@keyframes bounceCorrect {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+@keyframes shakeWrong {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+/* Feedback toast */
+.feedback-toast {
+  position: fixed;
+  top: 72px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
+  font-size: 14px; font-weight: 600;
+  z-index: 200;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+.feedback-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.feedback-toast.correct { border-color: var(--success); color: var(--success); }
+.feedback-toast.wrong { border-color: var(--error); color: var(--error); }
+
+/* Next button */
+.next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), #6366f1);
+  border: none;
+  border-radius: var(--radius);
+  padding: 16px;
+  color: #fff;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+  display: none;
+}
+.next-btn.visible { display: block; }
+.next-btn:active { transform: scale(0.97); }
+
+/* ===== MATCHING GAME ===== */
+.matching-container { display: flex; gap: 10px; }
+.matching-col { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.match-item {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  -webkit-tap-highlight-color: transparent;
+  min-height: 48px;
+  display: flex; align-items: center;
+  text-align: center; justify-content: center;
+  line-height: 1.3;
+  position: relative;
+}
+.match-item:active:not(.matched):not(.locked) { transform: scale(0.97); }
+.match-item.selected {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  box-shadow: 0 0 0 2px var(--primary-glow);
+}
+.match-item.matched {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+  cursor: default;
+}
+.match-item.matched::after {
+  content: '✓';
+  position: absolute;
+  top: 4px; right: 6px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+.match-item.wrong-flash {
+  border-color: var(--error);
+  background: var(--error-bg);
+  animation: shakeWrong 0.4s ease;
+}
+.match-item.locked { opacity: 0.4; cursor: default; }
+.match-item.abbr-item { font-size: 16px; font-weight: 800; }
+
+.match-check-btn {
+  width: 100%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  color: var(--text-muted);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: var(--transition);
+}
+.match-check-btn.ready {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  color: var(--primary);
+}
+.match-check-btn:active { transform: scale(0.98); }
+
+/* ===== FLASHCARD ===== */
+.flashcard-wrap {
+  perspective: 1000px;
+  height: 220px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+.flashcard {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.flashcard-face {
+  position: absolute; inset: 0;
+  border-radius: var(--radius);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  backface-visibility: hidden;
+  padding: 24px;
+  text-align: center;
+}
+.flashcard-front {
+  background: linear-gradient(135deg, var(--surface), var(--surface2));
+  border: 1px solid var(--border);
+}
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
+  border: 1px solid var(--primary);
+  transform: rotateY(180deg);
+}
+.flashcard-hint { font-size: 12px; color: var(--text-dim); margin-bottom: 12px; }
+.flashcard-abbr { font-size: 42px; font-weight: 900; color: var(--text); }
+.flashcard-expr { font-size: 17px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.flashcard-note { font-size: 13px; color: var(--text-muted); font-style: italic; }
+.flashcard-nav {
+  display: flex; gap: 10px;
+}
+.nav-btn {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  color: var(--text);
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.nav-btn:active { background: var(--surface2); transform: scale(0.97); }
+.nav-btn.primary-btn {
+  background: var(--primary-glow);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ===== RESULTS SCREEN ===== */
+.result-hero {
+  text-align: center;
+  padding: 32px 16px 20px;
+}
+.result-emoji {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes bounceIn {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.result-score { font-size: 48px; font-weight: 900; color: var(--success); }
+.result-label { font-size: 16px; color: var(--text-muted); margin-top: 4px; }
+.result-grade { font-size: 18px; font-weight: 700; margin-top: 12px; }
+
+.result-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.result-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.result-row:last-child { border-bottom: none; }
+.result-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.result-text { flex: 1; }
+.result-abbr { font-size: 15px; font-weight: 800; }
+.result-expr { font-size: 13px; color: var(--text-muted); margin-top: 1px; }
+.result-your { font-size: 12px; color: var(--error); margin-top: 3px; }
+
+.action-btn {
+  width: 100%;
+  border-radius: var(--radius);
+  padding: 15px;
+  font-size: 16px; font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  margin-bottom: 10px;
+}
+.action-btn:active { transform: scale(0.97); }
+.action-btn.primary { background: linear-gradient(135deg, var(--primary), #6366f1); color: #fff; box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
+.action-btn.secondary { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+.action-btn.warning { background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff; }
+
+/* ===== DICTIONARY ===== */
+.dict-search-wrap { position: sticky; top: 56px; z-index: 50; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); padding: 8px 16px 10px; border-bottom: 1px solid var(--border); }
+.dict-search {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px 10px 38px;
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  transition: var(--transition);
+}
+.dict-search:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
+.dict-search-icon {
+  position: absolute;
+  left: 28px; top: 50%; transform: translateY(-50%);
+  color: var(--text-dim); font-size: 16px;
+  pointer-events: none;
+}
+.dict-filter-wrap {
+  display: flex; gap: 6px;
+  padding: 0 16px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.dict-filter-wrap::-webkit-scrollbar { display: none; }
+.dict-filter {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-muted);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.dict-filter.active { background: var(--primary-glow); border-color: var(--primary); color: var(--primary); }
+.dict-filter.piros.active { background: var(--color-piros-bg); border-color: var(--color-piros); color: var(--color-piros); }
+.dict-filter.narancs.active { background: var(--color-narancs-bg); border-color: var(--color-narancs); color: var(--color-narancs); }
+
+.dict-list { padding: 8px 16px 24px; }
+.dict-letter-header {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 12px 0 6px;
+}
+.dict-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  border-left: 3px solid var(--border);
+  transition: var(--transition);
+  cursor: pointer;
+}
+.dict-card:active { background: var(--surface2); }
+.dict-card.piros { border-left-color: var(--color-piros); }
+.dict-card.narancs { border-left-color: var(--color-narancs); }
+.dict-abbr-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.dict-abbr { font-size: 17px; font-weight: 900; }
+.dict-color-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 2px 7px; border-radius: 8px;
+}
+.dict-color-tag.piros { background: var(--color-piros-bg); color: var(--color-piros); }
+.dict-color-tag.narancs { background: var(--color-narancs-bg); color: var(--color-narancs); }
+.dict-expr { font-size: 13px; color: var(--text-muted); font-style: italic; margin-bottom: 4px; }
+.dict-note { font-size: 12px; color: var(--text-dim); }
+
+/* ===== LEARNED TRACKING ===== */
+.learned-chip {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 8px;
+  background: var(--success-bg); color: var(--success);
+  border: 1px solid var(--success);
+  cursor: pointer;
+}
+.learned-chip.not { background: transparent; color: var(--text-dim); border-color: var(--border); }
+
+/* ===== STREAK DISPLAY ===== */
+.streak-banner {
+  background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(249,115,22,0.12));
+  border: 1px solid rgba(245,158,11,0.3);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 16px 12px;
+}
+.streak-fire { font-size: 24px; }
+.streak-info { flex: 1; }
+.streak-num { font-size: 18px; font-weight: 800; color: var(--warning); }
+.streak-txt { font-size: 12px; color: var(--text-muted); }
+
+/* ===== LOADING SPINNER ===== */
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 40px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== INSTALL BANNER ===== */
+.install-banner {
+  margin: 0 16px 12px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(99,102,241,0.1));
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.install-banner:active { background: var(--primary-glow); }
+.install-banner-text { flex: 1; font-size: 13px; font-weight: 600; }
+.install-banner-sub { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+.install-btn { font-size: 22px; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+}
+.empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* ===== BOTTOM SAFE AREA ===== */
+.safe-bottom { height: env(safe-area-inset-bottom, 16px); }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+  display: none;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+}
+.modal-overlay.active { display: flex; }
+.modal-sheet {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--surface);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 16px;
+  animation: slideUp 0.3s cubic-bezier(0.4,0,0.2,1);
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-handle {
+  width: 40px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.modal-title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+
+/* ===== RESPONSIVE TWEAKS ===== */
+@media (max-width: 340px) {
+  .home-title { font-size: 20px; }
+  .question-abbr { font-size: 28px; }
+  .matching-col { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HOME SCREEN ===== -->
+<div id="screen-home" class="screen active">
+  <div class="home-hero">
+    <div class="home-logo">🚚</div>
+    <div class="home-title">Logisztikai<br>Rövidítések</div>
+    <div class="home-sub">Tanuld meg az iparág kifejezéseit!</div>
+  </div>
+
+  <div id="streak-container"></div>
+  <div id="install-container"></div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-total">57</div>
+      <div class="stat-lbl">Rövidítés</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-learned">0</div>
+      <div class="stat-lbl">Megtanult</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="stat-sessions">0</div>
+      <div class="stat-lbl">Körök</div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-label">Játékmódok</div>
+    <div class="menu-card">
+      <div class="menu-item" onclick="startQuiz('mc')">
+        <div class="menu-icon blue">🎯</div>
+        <div class="menu-text">
+          <h3>Feleletválasztós</h3>
+          <p>Rövidítéshez válaszd a helyes kifejezést (4 lehetőség)</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-item" onclick="startQuiz('match')">
+        <div class="menu-icon purple">🔗</div>
+        <div class="menu-text">
+          <h3>Párosítás</h3>
+          <p>Kösd össze a rövidítéseket a kifejezésekkel</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-item" onclick="startQuiz('flash')">
+        <div class="menu-icon green">🃏</div>
+        <div class="menu-text">
+          <h3>Flashkártyák</h3>
+          <p>Lapozd át az összes rövidítést</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-label">Egyéb</div>
+    <div class="menu-card">
+      <div class="menu-item" onclick="showScreen('screen-dict')">
+        <div class="menu-icon amber">📖</div>
+        <div class="menu-text">
+          <h3>Szótár</h3>
+          <p>Böngészd az összes rövidítést</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+      <div class="menu-item" onclick="showSettingsModal()">
+        <div class="menu-icon teal">⚙️</div>
+        <div class="menu-text">
+          <h3>Beállítások</h3>
+          <p>Szín, darabszám, visszajelzés</p>
+        </div>
+        <span class="menu-arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="safe-bottom"></div>
+</div>
+
+<!-- ===== QUIZ SCREEN (Feleletválasztós) ===== -->
+<div id="screen-quiz" class="screen">
+  <div class="header">
+    <div class="header-back" onclick="confirmExit()">←</div>
+    <div class="header-title">
+      Feleletválasztós
+      <div class="header-sub" id="quiz-mode-sub"></div>
+    </div>
+    <div class="header-badge" id="quiz-score-badge">0/0</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="quiz-progress" style="width:0%"></div></div>
+    <div class="progress-info">
+      <span id="quiz-progress-text">1 / 10</span>
+      <span id="quiz-correct-text">✓ 0</span>
+    </div>
+  </div>
+  <div class="scroll-body" id="quiz-body">
+    <div class="spinner"></div>
+  </div>
+  <div id="feedback-toast" class="feedback-toast"></div>
+</div>
+
+<!-- ===== MATCH SCREEN ===== -->
+<div id="screen-match" class="screen">
+  <div class="header">
+    <div class="header-back" onclick="confirmExit()">←</div>
+    <div class="header-title">
+      Párosítás
+      <div class="header-sub" id="match-mode-sub"></div>
+    </div>
+    <div class="header-badge" id="match-score-badge">0/0</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="match-progress" style="width:0%"></div></div>
+    <div class="progress-info">
+      <span id="match-progress-text">Kör 1</span>
+      <span id="match-correct-text">✓ 0</span>
+    </div>
+  </div>
+  <div class="scroll-body" id="match-body">
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<!-- ===== FLASHCARD SCREEN ===== -->
+<div id="screen-flash" class="screen">
+  <div class="header">
+    <div class="header-back" onclick="confirmExit()">←</div>
+    <div class="header-title">Flashkártyák</div>
+    <div class="header-badge" id="flash-badge">1/57</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="flash-progress" style="width:0%"></div></div>
+    <div class="progress-info">
+      <span id="flash-progress-text">1 / 57</span>
+      <span id="flash-learned-text">⭐ 0 megtanult</span>
+    </div>
+  </div>
+  <div class="scroll-body" id="flash-body">
+  </div>
+</div>
+
+<!-- ===== DICT SCREEN ===== -->
+<div id="screen-dict" class="screen">
+  <div class="header">
+    <div class="header-back" onclick="showScreen('screen-home')">←</div>
+    <div class="header-title">Szótár</div>
+    <div class="header-badge" id="dict-count">57</div>
+  </div>
+  <div class="dict-search-wrap" style="position:relative;">
+    <span class="dict-search-icon">🔍</span>
+    <input type="search" class="dict-search" id="dict-search" placeholder="Keresés..." oninput="renderDict()">
+  </div>
+  <div class="dict-filter-wrap" id="dict-filters"></div>
+  <div class="dict-list" id="dict-list"></div>
+  <div class="safe-bottom"></div>
+</div>
+
+<!-- ===== RESULTS SCREEN ===== -->
+<div id="screen-results" class="screen">
+  <div class="header">
+    <div class="header-back" onclick="showScreen('screen-home')">←</div>
+    <div class="header-title">Eredmény</div>
+  </div>
+  <div class="scroll-body" id="results-body">
+  </div>
+</div>
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="settings-modal" onclick="closeSettingsModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Beállítások</div>
+
+    <div class="settings-panel">
+      <div class="settings-row">
+        <label>
+          Betanult szín szűrők
+          <small>Melyik kategóriákból tanulj</small>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="chip-group" id="color-filter-chips">
+          <div class="chip piros selected" data-color="Piros" onclick="toggleColorChip(this)">🔴 Piros</div>
+          <div class="chip narancs selected" data-color="Narancssárga" onclick="toggleColorChip(this)">🟠 Narancssárga</div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <label>
+          Gyakorlás nyelve / iránya
+          <small>Milyen válaszokat keresel</small>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="chip-group" id="direction-chips">
+          <div class="chip selected" data-dir="angol" onclick="setDirection('angol')">🇬🇧 Angol</div>
+          <div class="chip" data-dir="magyar" onclick="setDirection('magyar')">🇭🇺 Magyar</div>
+          <div class="chip" data-dir="vegyes" onclick="setDirection('vegyes')">🔀 Vegyes</div>
+        </div>
+      </div>
+
+      <div class="settings-row">
+        <label>
+          Kérdések száma
+          <small id="q-count-label">10 kérdés</small>
+        </label>
+        <span id="q-count-val" style="font-size:18px;font-weight:800;color:var(--primary);min-width:28px;text-align:right;">10</span>
+      </div>
+      <div class="settings-row">
+        <input type="range" id="q-count-range" min="4" max="30" value="10" oninput="updateQCount(this.value)">
+      </div>
+
+      <div class="settings-row">
+        <label>
+          Párosítás mérete
+          <small id="match-size-label">4 pár per kör</small>
+        </label>
+        <span id="match-size-val" style="font-size:18px;font-weight:800;color:var(--primary);min-width:28px;text-align:right;">4</span>
+      </div>
+      <div class="settings-row">
+        <input type="range" id="match-size-range" min="3" max="8" value="4" oninput="updateMatchSize(this.value)">
+      </div>
+
+      <div class="settings-row">
+        <label>
+          Azonnali visszajelzés
+          <small>Azonnal mutatja a helyes választ</small>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="instant-feedback" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-row">
+        <label>
+          Megjegyzés mutatása
+          <small>Kérdőlapnál is látszódjon</small>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="show-note">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <button class="action-btn primary" onclick="closeSettingsModal()">Kész</button>
+    <div class="safe-bottom"></div>
+  </div>
+</div>
+
+<!-- ===== CONFIRM EXIT MODAL ===== -->
+<div class="modal-overlay" id="exit-modal" onclick="closeExitModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚠️ Kilépés</div>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">Biztosan megszakítod a gyakorlást? A haladásod elvész.</p>
+    <button class="action-btn primary" onclick="closeExitModal(); showScreen('screen-home')">Igen, kilép</button>
+    <button class="action-btn secondary" onclick="closeExitModal()">Folytatás</button>
+    <div class="safe-bottom"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const DATA = [
+  {"rovidit":"3PL","kifejez":"Third-Party Logistics","megjegyz":"külső logisztikai szolgáltató","szin":"Piros"},
+  {"rovidit":"4PL","kifejez":"Fourth-Party Logistics","megjegyz":"integrált logisztikai szolgáltató, több szolgáltató koordinálása","szin":"Piros"},
+  {"rovidit":"5PL","kifejez":"Fifth-Party Logistics","megjegyz":"hálózati, digitálisan integrált logisztikai szolgáltatás","szin":"Piros"},
+  {"rovidit":"ABC","kifejez":"Activity-Based Costing","megjegyz":"tevékenységalapú költségszámítás","szin":"Piros"},
+  {"rovidit":"ABC","kifejez":"ABC Analysis","megjegyz":"készletek érték/fontosság szerinti osztályozása","szin":"Piros"},
+  {"rovidit":"ADR","kifejez":"Accord européen relatif au transport international des marchandises Dangereuses par Route","megjegyz":"Veszélyes áru szállítása / Közút","szin":"Piros"},
+  {"rovidit":"AGV","kifejez":"Automated Guided Vehicle","megjegyz":"automatikusan vezetett anyagmozgató jármű","szin":"Piros"},
+  {"rovidit":"AI","kifejez":"Artificial Intelligence","megjegyz":"mesterséges intelligencia","szin":"Piros"},
+  {"rovidit":"AMR","kifejez":"Autonomous Mobile Robot","megjegyz":"autonóm mobil robot","szin":"Piros"},
+  {"rovidit":"APS","kifejez":"Advanced Planning and Scheduling","megjegyz":"fejlett termelés- és kapacitástervezés","szin":"Piros"},
+  {"rovidit":"AS/RS","kifejez":"Automated Storage and Retrieval System","megjegyz":"automatikus tároló- és kitárolórendszer","szin":"Piros"},
+  {"rovidit":"ASN","kifejez":"Advanced Shipping Notice","megjegyz":"előzetes szállítási értesítés","szin":"Piros"},
+  {"rovidit":"ATO","kifejez":"Assemble to Order","megjegyz":"rendelésre összeszerelés","szin":"Piros"},
+  {"rovidit":"ATP","kifejez":"Available to Promise","megjegyz":"vevőnek ígérhető mennyiség","szin":"Piros"},
+  {"rovidit":"B2B","kifejez":"Business-to-Business","megjegyz":"vállalatok közötti kereskedelem","szin":"Piros"},
+  {"rovidit":"B2C","kifejez":"Business-to-Consumer","megjegyz":"vállalat és végfogyasztó közötti kereskedelem","szin":"Piros"},
+  {"rovidit":"BILK","kifejez":"Budapesti Intermodális Logisztikai Központ","megjegyz":"","szin":"Piros"},
+  {"rovidit":"BOM","kifejez":"Bill of Materials","megjegyz":"darabjegyzék, anyagjegyzék","szin":"Piros"},
+  {"rovidit":"BSC","kifejez":"Balanced Scorecard","megjegyz":"kiegyensúlyozott stratégiai mutatószámrendszer","szin":"Piros"},
+  {"rovidit":"BTO","kifejez":"Build to Order","megjegyz":"rendelésre történő gyártás","szin":"Piros"},
+  {"rovidit":"CAD","kifejez":"Computer-Aided Design","megjegyz":"számítógéppel támogatott tervezés","szin":"Piros"},
+  {"rovidit":"CAM","kifejez":"Computer-Aided Manufacturing","megjegyz":"számítógéppel támogatott gyártás","szin":"Piros"},
+  {"rovidit":"CAPEX","kifejez":"Capital Expenditure","megjegyz":"beruházási kiadás","szin":"Piros"},
+  {"rovidit":"CAPP","kifejez":"Computer Aided Production Planning","megjegyz":"számítógépes termeléstervezés","szin":"Piros"},
+  {"rovidit":"CAQ","kifejez":"Computer Aided Quality Control","megjegyz":"számítógéppel támogatott minőség-ellenőrzés","szin":"Piros"},
+  {"rovidit":"CBM","kifejez":"Cubic Meter","megjegyz":"köbméter; szállítási térfogat","szin":"Piros"},
+  {"rovidit":"CD","kifejez":"Cross Docking","megjegyz":"átrendező terminálnak (virtuális raktár)","szin":"Piros"},
+  {"rovidit":"CEP","kifejez":"Courier - Express - Parcel","megjegyz":"futár-expressz-csomagküldő szolgáltatás","szin":"Piros"},
+  {"rovidit":"CFS","kifejez":"Container Freight Station","megjegyz":"konténeres gyűjtő-/rakodóállomás","szin":"Piros"},
+  {"rovidit":"CIF","kifejez":"Cost, Insurance and Freight","megjegyz":"Incoterms klauzula","szin":"Piros"},
+  {"rovidit":"CIL","kifejez":"Computer Integrated Logistics","megjegyz":"számítógéppel integrált logisztikai rendszerek","szin":"Piros"},
+  {"rovidit":"CIM","kifejez":"Computer Integrated Manufacturing","megjegyz":"számítógéppel integrált gyártás","szin":"Piros"},
+  {"rovidit":"CMI","kifejez":"Co-Managed Inventory","megjegyz":"beszállítóval közösen menedzselt készletek","szin":"Piros"},
+  {"rovidit":"CNC","kifejez":"Computer Numerical Control","megjegyz":"számítógépes numerikus vezérlés","szin":"Piros"},
+  {"rovidit":"CO₂e","kifejez":"Carbon Dioxide Equivalent","megjegyz":"szén-dioxid-egyenérték","szin":"Piros"},
+  {"rovidit":"COGS","kifejez":"Cost of Goods Sold","megjegyz":"értékesített termékek költsége","szin":"Piros"},
+  {"rovidit":"CONWIP","kifejez":"Constant Work in Progress","megjegyz":"húzásorientált (pull) gyártásirányítási rendszer","szin":"Piros"},
+  {"rovidit":"CPFR","kifejez":"Collaborative Planning, Forecasting and Replenishment","megjegyz":"együttműködésen alapuló tervezés, előrejelzés és utánpótlás","szin":"Piros"},
+  {"rovidit":"CPM","kifejez":"Critical Path Method","megjegyz":"kritikus út módszere","szin":"Piros"},
+  {"rovidit":"CR","kifejez":"Continuouos Replenishment","megjegyz":"folyamatos feltöltés (utántöltés)","szin":"Piros"},
+  {"rovidit":"CR","kifejez":"Critical Ratio","megjegyz":"kritikus ráta; termelési prioritási szabály","szin":"Piros"},
+  {"rovidit":"CRP","kifejez":"Capacity Requirements Planning","megjegyz":"kapacitásszükséglet-tervezés","szin":"Piros"},
+  {"rovidit":"CRP","kifejez":"Continuous Replenishment Program","megjegyz":"folyamatos utánpótlási program","szin":"Piros"},
+  {"rovidit":"CT","kifejez":"Cycle Time","megjegyz":"ciklusidő","szin":"Piros"},
+  {"rovidit":"CTP","kifejez":"Capable to Promise","megjegyz":"kapacitás alapján ígérhető mennyiség","szin":"Piros"},
+  {"rovidit":"DC","kifejez":"Distribution Center","megjegyz":"elosztóközpont","szin":"Piros"},
+  {"rovidit":"DDMRP","kifejez":"Demand Driven Material Requirements Planning","megjegyz":"keresetvezérelt anyagszükséglet-tervezés","szin":"Piros"},
+  {"rovidit":"DIO","kifejez":"Days Inventory Outstanding","megjegyz":"készletben állás átlagos napjainak száma","szin":"Piros"},
+  {"rovidit":"DMS","kifejez":"Dock Management System","megjegyz":"rakodókapu-kezelő rendszer","szin":"Piros"},
+  {"rovidit":"DOH","kifejez":"Days on Hand","megjegyz":"készletfedezet napokban","szin":"Piros"},
+  {"rovidit":"DRP","kifejez":"Distribution Resource Planning","megjegyz":"disztribúciós erőforrás-tervezési rendszer","szin":"Piros"},
+  {"rovidit":"DRP II","kifejez":"Distribution Resource Planning","megjegyz":"elosztási erőforrás-tervezés","szin":"Piros"},
+  {"rovidit":"EAN","kifejez":"European Article Number","megjegyz":"termékazonosítási rendszer; ma GTIN-rendszer részeként használatos","szin":"Narancssárga"},
+  {"rovidit":"ECR","kifejez":"Efficient Consumer Response","megjegyz":"hatékony fogyasztói válasz","szin":"Narancssárga"},
+  {"rovidit":"EDD","kifejez":"Earliest Due Date","megjegyz":"legkorábbi határidő szerinti prioritás","szin":"Narancssárga"},
+  {"rovidit":"EDI","kifejez":"Electronic Data Interchange","megjegyz":"elektronikus adatcsere","szin":"Narancssárga"},
+  {"rovidit":"EDIFACT","kifejez":"Electronic Data Interchange for Administration, Commerce and Transport","megjegyz":"szabványos elektronikus adatcsere","szin":"Narancssárga"}
+];
+
+// ===== STATE =====
+let settings = {
+  colors: ['Piros', 'Narancssárga'],
+  qCount: 10,
+  matchSize: 4,
+  instantFeedback: true,
+  showNote: false,
+  direction: 'angol'  // 'angol' | 'magyar' | 'vegyes'
+};
+let progress = {
+  learned: {},
+  sessions: 0,
+  totalCorrect: 0,
+  totalAnswered: 0,
+  streak: 0,
+  lastDate: null
+};
+
+// Quiz state
+let quizState = {};
+let matchState = {};
+let flashState = {};
+let currentMode = null;
+
+// PWA install
+let deferredPrompt = null;
+
+// ===== INIT =====
+function init() {
+  loadProgress();
+  loadSettings();
+  applySettings();
+  updateHomeStats();
+  renderStreak();
+  renderInstallBanner();
+  initDict();
+  registerSW();
+}
+
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+}
+
+// ===== LOCALSTORAGE =====
+function saveProgress() {
+  localStorage.setItem('log_progress', JSON.stringify(progress));
+}
+function loadProgress() {
+  try {
+    const s = localStorage.getItem('log_progress');
+    if (s) progress = { ...progress, ...JSON.parse(s) };
+  } catch(e) {}
+  checkStreak();
+}
+function saveSettings() {
+  localStorage.setItem('log_settings', JSON.stringify(settings));
+}
+function loadSettings() {
+  try {
+    const s = localStorage.getItem('log_settings');
+    if (s) settings = { ...settings, ...JSON.parse(s) };
+  } catch(e) {}
+}
+function applySettings() {
+  document.getElementById('q-count-range').value = settings.qCount;
+  document.getElementById('q-count-val').textContent = settings.qCount;
+  document.getElementById('match-size-range').value = settings.matchSize;
+  document.getElementById('match-size-val').textContent = settings.matchSize;
+  document.getElementById('instant-feedback').checked = settings.instantFeedback;
+  document.getElementById('show-note').checked = settings.showNote;
+  document.querySelectorAll('[data-color]').forEach(chip => {
+    const c = chip.dataset.color;
+    chip.classList.toggle('selected', settings.colors.includes(c));
+  });
+  document.querySelectorAll('[data-dir]').forEach(chip => {
+    chip.classList.toggle('selected', chip.dataset.dir === settings.direction);
+  });
+}
+
+function checkStreak() {
+  const today = new Date().toDateString();
+  if (progress.lastDate && progress.lastDate !== today) {
+    const last = new Date(progress.lastDate);
+    const now = new Date();
+    const diff = Math.floor((now - last) / 86400000);
+    if (diff > 1) progress.streak = 0;
+  }
+}
+
+// ===== SCREEN NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'screen-dict') renderDict();
+  if (id === 'screen-home') updateHomeStats();
+}
+
+// ===== HOME =====
+function updateHomeStats() {
+  const learned = Object.values(progress.learned).filter(Boolean).length;
+  document.getElementById('stat-total').textContent = DATA.length;
+  document.getElementById('stat-learned').textContent = learned;
+  document.getElementById('stat-sessions').textContent = progress.sessions;
+}
+
+function renderStreak() {
+  const el = document.getElementById('streak-container');
+  if (progress.streak >= 2) {
+    el.innerHTML = `
+      <div class="streak-banner">
+        <span class="streak-fire">🔥</span>
+        <div class="streak-info">
+          <div class="streak-num">${progress.streak} napos sorozat!</div>
+          <div class="streak-txt">Folytatsd ma is!</div>
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+function renderInstallBanner() {
+  const el = document.getElementById('install-container');
+  if (deferredPrompt) {
+    el.innerHTML = `
+      <div class="install-banner" onclick="installPWA()">
+        <span class="install-btn">📲</span>
+        <div class="install-banner-text">
+          Telepítés a kezdőképernyőre
+          <div class="install-banner-sub">Offline is működik!</div>
+        </div>
+        <span>›</span>
+      </div>`;
+  }
+}
+
+// ===== PWA INSTALL =====
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  renderInstallBanner();
+});
+function installPWA() {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; renderInstallBanner(); });
+}
+
+// ===== SETTINGS =====
+function showSettingsModal() {
+  document.getElementById('settings-modal').classList.add('active');
+}
+function closeSettingsModal(e) {
+  if (e && e.target !== document.getElementById('settings-modal')) return;
+  document.getElementById('settings-modal').classList.remove('active');
+  saveSettings();
+}
+function toggleColorChip(el) {
+  const color = el.dataset.color;
+  if (settings.colors.includes(color)) {
+    if (settings.colors.length <= 1) { showToast('Legalább egy színt válassz!', 'wrong'); return; }
+    settings.colors = settings.colors.filter(c => c !== color);
+    el.classList.remove('selected');
+  } else {
+    settings.colors.push(color);
+    el.classList.add('selected');
+  }
+}
+function updateQCount(v) {
+  settings.qCount = parseInt(v);
+  document.getElementById('q-count-val').textContent = v;
+}
+function updateMatchSize(v) {
+  settings.matchSize = parseInt(v);
+  document.getElementById('match-size-val').textContent = v;
+}
+function setDirection(dir) {
+  settings.direction = dir;
+  document.querySelectorAll('[data-dir]').forEach(chip => {
+    chip.classList.toggle('selected', chip.dataset.dir === dir);
+  });
+}
+
+// ===== HELPERS =====
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// Visszaadja a kérdéshez tartozó helyes választ a direction setting alapján.
+// Ha vegyes, per-kérdés szinten véletlenszerű (a q._useHu flag-et a kérdés generálásakor kell beállítani).
+function getAnswerFor(item) {
+  const dir = item._dir || settings.direction;
+  if (dir === 'magyar') {
+    return item.megjegyz || item.kifejez;   // fallback angolra ha nincs magyar
+  }
+  return item.kifejez;
+}
+
+// A kérdések listájához hozzárendeli, ki minek a nyelvi irányát kérdezzük.
+// 'vegyes' esetén minden elemhez random állítjuk be.
+function assignDirections(items) {
+  return items.map(item => {
+    let dir = settings.direction;
+    if (dir === 'vegyes') {
+      dir = Math.random() < 0.5 ? 'angol' : 'magyar';
+    }
+    return { ...item, _dir: dir };
+  });
+}
+
+// Megfelelő label szöveg a fejlécbe
+function directionLabel() {
+  if (settings.direction === 'magyar') return '🇭🇺 Magyar jelentés';
+  if (settings.direction === 'vegyes') return '🔀 Vegyes';
+  return '🇬🇧 Angol kifejezés';
+}
+function getFilteredData() {
+  return DATA.filter(d => settings.colors.includes(d.szin));
+}
+function colorClass(szin) {
+  if (szin === 'Piros') return 'piros';
+  if (szin === 'Narancssárga') return 'narancs';
+  return '';
+}
+function colorDot(szin) {
+  const colors = { 'Piros': '#ef4444', 'Narancssárga': '#f97316' };
+  return `<span class="question-color-dot" style="background:${colors[szin]||'#64748b'}"></span>`;
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg, type) {
+  const el = document.getElementById('feedback-toast');
+  if (!el) return;
+  clearTimeout(toastTimer);
+  el.textContent = msg;
+  el.className = `feedback-toast ${type} show`;
+  toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+// ===== CONFIRM EXIT =====
+function confirmExit() {
+  document.getElementById('exit-modal').classList.add('active');
+}
+function closeExitModal(e) {
+  if (e && e.target !== document.getElementById('exit-modal')) return;
+  document.getElementById('exit-modal').classList.remove('active');
+}
+
+// ===== QUIZ MODE (Feleletválasztós) =====
+function startQuiz(mode) {
+  settings.instantFeedback = document.getElementById('instant-feedback').checked;
+  settings.showNote = document.getElementById('show-note').checked;
+  currentMode = mode;
+
+  const rawData = shuffle(getFilteredData()).slice(0, settings.qCount);
+  if (rawData.length < 4) {
+    alert('Kevés rövidítés van a kiválasztott szűrőkkel. Válassz több színt!');
+    return;
+  }
+  const data = assignDirections(rawData);
+
+  if (mode === 'mc') {
+    quizState = {
+      questions: data,
+      current: 0,
+      correct: 0,
+      wrong: [],
+      wrongAnswers: [],
+      answered: false
+    };
+    const fbLabel = settings.instantFeedback ? 'Azonnali visszajelzés' : 'Végén visszajelzés';
+    document.getElementById('quiz-mode-sub').textContent = `${directionLabel()} · ${fbLabel}`;
+    showScreen('screen-quiz');
+    renderQuizQuestion();
+  } else if (mode === 'match') {
+    matchState = {
+      allItems: data,
+      roundIndex: 0,
+      correct: 0,
+      total: 0,
+      wrong: [],
+      wrongItems: []
+    };
+    document.getElementById('match-mode-sub').textContent = `${directionLabel()} · ${settings.matchSize} pár/kör`;
+    showScreen('screen-match');
+    renderMatchRound();
+  } else if (mode === 'flash') {
+    flashState = {
+      items: shuffle(getFilteredData()),
+      current: 0,
+      flipped: false
+    };
+    showScreen('screen-flash');
+    renderFlash();
+  }
+}
+
+// ===== QUIZ: MC =====
+function renderQuizQuestion() {
+  const state = quizState;
+  const q = state.questions[state.current];
+  const total = state.questions.length;
+  const correctAnswer = getAnswerFor(q);
+  const isHu = (q._dir === 'magyar');
+
+  document.getElementById('quiz-progress').style.width = `${(state.current / total) * 100}%`;
+  document.getElementById('quiz-progress-text').textContent = `${state.current + 1} / ${total}`;
+  document.getElementById('quiz-correct-text').textContent = `✓ ${state.correct}`;
+  document.getElementById('quiz-score-badge').textContent = `${state.correct}/${state.current}`;
+
+  // Build wrong options from the same field (angol/magyar) as the correct answer
+  const pool = DATA.filter(d => {
+    const ans = isHu ? (d.megjegyz || d.kifejez) : d.kifejez;
+    return ans !== correctAnswer;
+  });
+  const wrongOptions = shuffle(pool).slice(0, 3).map(d => isHu ? (d.megjegyz || d.kifejez) : d.kifejez);
+  const options = shuffle([correctAnswer, ...wrongOptions]);
+
+  const dirFlag = isHu ? '🇭🇺 Magyar jelentést keresünk' : '🇬🇧 Angol kifejezést keresünk';
+  const noteHtml = (settings.showNote && q.megjegyz && !isHu)
+    ? `<div class="question-note">💡 ${escHtml(q.megjegyz)}</div>`
+    : (settings.showNote && !isHu ? '' : '');
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const optionsHtml = options.map((opt, i) => `
+    <button class="option-btn" onclick="selectOption(this, '${escHtml(opt)}', '${escHtml(correctAnswer)}', ${i})" data-idx="${i}">
+      <span class="option-letter">${letters[i]}</span>
+      <span>${escHtml(opt)}</span>
+    </button>`).join('');
+
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="question-card">
+      ${colorDot(q.szin)}
+      <div class="question-label">${dirFlag}</div>
+      <div class="question-abbr">${escHtml(q.rovidit)}</div>
+      ${noteHtml}
+    </div>
+    <div class="options-grid">${optionsHtml}</div>
+    <button class="next-btn" id="quiz-next-btn" onclick="nextQuestion()">
+      ${state.current + 1 < total ? 'Következő →' : '📊 Eredmények'}
+    </button>`;
+
+  state.answered = false;
+}
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function selectOption(btn, chosen, correct, idx) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+
+  const isCorrect = chosen === correct;
+  const q = quizState.questions[quizState.current];
+  const buttons = document.querySelectorAll('.option-btn');
+  const instantFeedback = settings.instantFeedback;
+
+  if (instantFeedback) {
+    buttons.forEach(b => {
+      b.disabled = true;
+      const bText = b.querySelector('span:last-child').textContent;
+      if (bText === correct) b.classList.add('correct');
+    });
+    if (!isCorrect) btn.classList.add('wrong');
+
+    if (isCorrect) {
+      showToast('✓ Helyes!', 'correct');
+      quizState.correct++;
+      markLearned(q.rovidit, q.kifejez);
+    } else {
+      showToast('✗ Helytelen!', 'wrong');
+      quizState.wrong.push(q);
+      quizState.wrongAnswers.push({ q, chosen });
+    }
+  } else {
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    buttons.forEach(b => b.disabled = true);
+    if (isCorrect) {
+      quizState.correct++;
+      markLearned(q.rovidit, q.kifejez);
+    } else {
+      quizState.wrong.push(q);
+      quizState.wrongAnswers.push({ q, chosen });
+    }
+  }
+
+  document.getElementById('quiz-next-btn').classList.add('visible');
+  document.getElementById('quiz-score-badge').textContent = `${quizState.correct}/${quizState.current + 1}`;
+
+  // Progress tracking
+  progress.totalAnswered++;
+  if (isCorrect) progress.totalCorrect++;
+  updateStreak();
+}
+
+function nextQuestion() {
+  quizState.current++;
+  if (quizState.current >= quizState.questions.length) {
+    finishQuiz();
+  } else {
+    renderQuizQuestion();
+  }
+}
+
+function finishQuiz() {
+  progress.sessions++;
+  saveProgress();
+  showResults('mc', quizState.correct, quizState.questions.length, quizState.wrongAnswers);
+}
+
+// ===== RESULTS =====
+function showResults(mode, correct, total, wrongAnswers) {
+  const pct = Math.round((correct / total) * 100);
+  let emoji, grade;
+  if (pct === 100) { emoji = '🏆'; grade = 'Tökéletes! Brávó!'; }
+  else if (pct >= 80) { emoji = '🎉'; grade = 'Kiváló munka!'; }
+  else if (pct >= 60) { emoji = '👍'; grade = 'Szép teljesítmény!'; }
+  else if (pct >= 40) { emoji = '📚'; grade = 'Még van mit tanulni...'; }
+  else { emoji = '💪'; grade = 'Ne add fel, próbáld újra!'; }
+
+  const wrongListHtml = wrongAnswers.length === 0 ? '' : `
+    <div style="padding:0 0 8px;font-size:13px;font-weight:700;color:var(--text-muted);">Hibás válaszok:</div>
+    <div class="result-detail">
+      ${wrongAnswers.map(({q, chosen}) => {
+        const correctAns = getAnswerFor(q);
+        const isHu = q._dir === 'magyar';
+        const secondLine = isHu
+          ? `<div class="result-expr" style="color:var(--text-dim)">🇬🇧 ${escHtml(q.kifejez)}</div>`
+          : (q.megjegyz ? `<div class="result-expr" style="color:var(--text-dim)">🇭🇺 ${escHtml(q.megjegyz)}</div>` : '');
+        return `
+        <div class="result-row">
+          <span class="result-icon">❌</span>
+          <div class="result-text">
+            <div class="result-abbr">${escHtml(q.rovidit)}</div>
+            <div class="result-expr">✓ ${escHtml(correctAns)}</div>
+            ${secondLine}
+            ${chosen ? `<div class="result-your">✗ Te: ${escHtml(chosen)}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  document.getElementById('results-body').innerHTML = `
+    <div class="result-hero">
+      <span class="result-emoji">${emoji}</span>
+      <div class="result-score">${pct}%</div>
+      <div class="result-label">${correct} / ${total} helyes</div>
+      <div class="result-grade">${grade}</div>
+    </div>
+    ${wrongListHtml}
+    ${wrongAnswers.length > 0 ? `<button class="action-btn warning" onclick="retryWrong()">🔄 Hibások újrapróbálása</button>` : ''}
+    <button class="action-btn primary" onclick="startQuiz('${mode}')">▶ Új kör</button>
+    <button class="action-btn secondary" onclick="showScreen('screen-home')">🏠 Főmenü</button>
+    <div class="safe-bottom"></div>`;
+
+  showScreen('screen-results');
+}
+
+function retryWrong() {
+  if (currentMode === 'match' && matchState.wrong && matchState.wrong.length > 0) {
+    const wrongItems = assignDirections(matchState.wrong);
+    matchState = {
+      allItems: shuffle(wrongItems),
+      roundIndex: 0,
+      correct: 0,
+      total: 0,
+      wrong: []
+    };
+    showScreen('screen-match');
+    renderMatchRound();
+  } else if (quizState.wrongAnswers && quizState.wrongAnswers.length > 0) {
+    const wrongItems = assignDirections(quizState.wrongAnswers.map(w => w.q));
+    quizState = {
+      questions: shuffle(wrongItems),
+      current: 0, correct: 0, wrong: [], wrongAnswers: [], answered: false
+    };
+    showScreen('screen-quiz');
+    renderQuizQuestion();
+  }
+}
+
+// ===== MATCHING GAME =====
+function renderMatchRound() {
+  const state = matchState;
+  const size = settings.matchSize;
+  const start = state.roundIndex * size;
+  const roundItems = state.allItems.slice(start, start + size);
+
+  if (roundItems.length === 0) {
+    finishMatch();
+    return;
+  }
+
+  const total = state.allItems.length;
+  const done = start;
+  document.getElementById('match-progress').style.width = `${(done / total) * 100}%`;
+  document.getElementById('match-progress-text').textContent = `Kör ${state.roundIndex + 1}`;
+  document.getElementById('match-correct-text').textContent = `✓ ${state.correct}`;
+  document.getElementById('match-score-badge').textContent = `${state.correct}/${state.total}`;
+
+  const abbrs = shuffle(roundItems.map((_, i) => i));
+  const exprs = shuffle(roundItems.map((_, i) => i));
+
+  // Map from shuffled position -> original index
+  state.currentRound = roundItems;
+  state.abbrOrder = abbrs;
+  state.exprOrder = exprs;
+  state.selectedAbbr = null;
+  state.selectedExpr = null;
+  state.matchedCount = 0;
+  state.totalInRound = roundItems.length;
+  state.roundWrong = [];
+
+  const abbrCols = abbrs.map((origIdx, pos) => `
+    <div class="match-item abbr-item" id="abbr-${pos}" data-orig="${origIdx}" onclick="selectAbbr(${pos})">
+      ${escHtml(roundItems[origIdx].rovidit)}
+    </div>`).join('');
+
+  const exprCols = exprs.map((origIdx, pos) => `
+    <div class="match-item" id="expr-${pos}" data-orig="${origIdx}" onclick="selectExpr(${pos})">
+      ${escHtml(getAnswerFor(roundItems[origIdx]))}
+    </div>`).join('');
+
+  const instrLabel = settings.direction === 'magyar'
+    ? 'Érintsd meg a rövidítést, majd a magyar jelentését!'
+    : settings.direction === 'vegyes'
+    ? 'Érintsd meg a rövidítést és a hozzá tartozó kifejezést (🇬🇧/🇭🇺)!'
+    : 'Érintsd meg a rövidítést, majd az angol kifejezést!';
+
+  document.getElementById('match-body').innerHTML = `
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;text-align:center;">
+      ${instrLabel}
+    </p>
+    <div class="matching-container">
+      <div class="matching-col">${abbrCols}</div>
+      <div class="matching-col">${exprCols}</div>
+    </div>
+    <button class="match-check-btn" id="match-done-btn" style="display:none" onclick="nextMatchRound()">
+      Következő kör →
+    </button>`;
+}
+
+function selectAbbr(pos) {
+  const state = matchState;
+  const el = document.getElementById(`abbr-${pos}`);
+  if (el.classList.contains('matched') || el.classList.contains('locked')) return;
+
+  document.querySelectorAll('.match-item.abbr-item').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  state.selectedAbbr = pos;
+
+  if (state.selectedExpr !== null) checkMatch();
+}
+
+function selectExpr(pos) {
+  const state = matchState;
+  const el = document.getElementById(`expr-${pos}`);
+  if (el.classList.contains('matched') || el.classList.contains('locked')) return;
+
+  document.querySelectorAll('.match-item:not(.abbr-item)').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  state.selectedExpr = pos;
+
+  if (state.selectedAbbr !== null) checkMatch();
+}
+
+function checkMatch() {
+  const state = matchState;
+  const abbrPos = state.selectedAbbr;
+  const exprPos = state.selectedExpr;
+  const abbrOrigIdx = parseInt(document.getElementById(`abbr-${abbrPos}`).dataset.orig);
+  const exprOrigIdx = parseInt(document.getElementById(`expr-${exprPos}`).dataset.orig);
+
+  const abbrEl = document.getElementById(`abbr-${abbrPos}`);
+  const exprEl = document.getElementById(`expr-${exprPos}`);
+
+  state.selectedAbbr = null;
+  state.selectedExpr = null;
+
+  if (abbrOrigIdx === exprOrigIdx) {
+    // Correct!
+    abbrEl.classList.remove('selected');
+    exprEl.classList.remove('selected');
+    abbrEl.classList.add('matched');
+    exprEl.classList.add('matched');
+    state.matchedCount++;
+    state.correct++;
+    state.total++;
+    markLearned(state.currentRound[abbrOrigIdx].rovidit, state.currentRound[abbrOrigIdx].kifejez);
+
+    if (state.matchedCount === state.totalInRound) {
+      // Round done
+      setTimeout(() => {
+        state.roundIndex++;
+        const nextStart = state.roundIndex * settings.matchSize;
+        if (nextStart >= state.allItems.length) {
+          finishMatch();
+        } else {
+          renderMatchRound();
+        }
+      }, 600);
+    }
+  } else {
+    // Wrong
+    abbrEl.classList.add('wrong-flash');
+    exprEl.classList.add('wrong-flash');
+    state.total++;
+    const wrongItem = state.currentRound[abbrOrigIdx];
+    if (!state.wrong.some(w => w.rovidit === wrongItem.rovidit && w.kifejez === wrongItem.kifejez)) {
+      state.wrong.push(wrongItem);
+    }
+    setTimeout(() => {
+      abbrEl.classList.remove('wrong-flash', 'selected');
+      exprEl.classList.remove('wrong-flash', 'selected');
+    }, 500);
+  }
+
+  document.getElementById('match-score-badge').textContent = `${state.correct}/${state.total}`;
+  document.getElementById('match-correct-text').textContent = `✓ ${state.correct}`;
+  progress.totalAnswered++;
+  if (abbrOrigIdx === exprOrigIdx) progress.totalCorrect++;
+  updateStreak();
+}
+
+function nextMatchRound() {
+  matchState.roundIndex++;
+  renderMatchRound();
+}
+
+function finishMatch() {
+  progress.sessions++;
+  saveProgress();
+  const wrongAnswers = (matchState.wrong || []).map(q => ({ q, chosen: null }));
+  showResults('match', matchState.correct, matchState.total || 1, wrongAnswers);
+}
+
+// ===== FLASHCARD =====
+function renderFlash() {
+  const state = flashState;
+  const items = state.items;
+  const idx = state.current;
+  const item = items[idx];
+  const total = items.length;
+
+  const learnedCount = Object.values(progress.learned).filter(Boolean).length;
+  const isLearned = progress.learned[item.rovidit + '|' + item.kifejez];
+
+  document.getElementById('flash-badge').textContent = `${idx + 1}/${total}`;
+  document.getElementById('flash-progress').style.width = `${((idx + 1) / total) * 100}%`;
+  document.getElementById('flash-progress-text').textContent = `${idx + 1} / ${total}`;
+  document.getElementById('flash-learned-text').textContent = `⭐ ${learnedCount} megtanult`;
+
+  const noteHtml = item.megjegyz ? `<div class="flashcard-note">💡 ${escHtml(item.megjegyz)}</div>` : '';
+  const colorDotHtml = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${item.szin === 'Piros' ? '#ef4444' : '#f97316'};margin-right:6px;"></span>`;
+
+  document.getElementById('flash-body').innerHTML = `
+    <div class="flashcard-wrap" onclick="flipCard()">
+      <div class="flashcard" id="flashcard" ${state.flipped ? 'class="flipped"' : ''}>
+        <div class="flashcard-face flashcard-front">
+          <div class="flashcard-hint">Érintsd meg a megfordításhoz</div>
+          <div class="flashcard-abbr">${escHtml(item.rovidit)}</div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text-dim)">${colorDotHtml}${escHtml(item.szin)}</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="flashcard-hint">Teljes megnevezés</div>
+          <div class="flashcard-expr">🇬🇧 ${escHtml(item.kifejez)}</div>
+          ${item.megjegyz ? `<div class="flashcard-note" style="margin-top:10px;font-style:normal;font-size:14px;font-weight:600;color:var(--text);">🇭🇺 ${escHtml(item.megjegyz)}</div>` : ''}
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-nav">
+      <button class="nav-btn" onclick="flashNav(-1)" ${idx === 0 ? 'disabled style="opacity:0.4"' : ''}>← Előző</button>
+      <button class="nav-btn ${isLearned ? 'primary-btn' : ''}" onclick="toggleLearnedFlash()" id="flash-learn-btn">
+        ${isLearned ? '⭐ Megtanult' : '☆ Megjegyez'}
+      </button>
+      <button class="nav-btn" onclick="flashNav(1)" ${idx >= total - 1 ? 'disabled style="opacity:0.4"' : ''}>Következő →</button>
+    </div>
+    <div style="margin-top:16px;text-align:center;">
+      <button class="action-btn secondary" style="width:auto;padding:10px 24px;font-size:14px;" onclick="shuffleFlash()">🔀 Keverés</button>
+    </div>`;
+
+  if (state.flipped) {
+    setTimeout(() => {
+      const card = document.getElementById('flashcard');
+      if (card) card.classList.add('flipped');
+    }, 10);
+  }
+}
+
+function flipCard() {
+  flashState.flipped = !flashState.flipped;
+  const card = document.getElementById('flashcard');
+  if (card) card.classList.toggle('flipped', flashState.flipped);
+}
+
+function flashNav(dir) {
+  flashState.current = Math.max(0, Math.min(flashState.items.length - 1, flashState.current + dir));
+  flashState.flipped = false;
+  renderFlash();
+}
+
+function shuffleFlash() {
+  flashState.items = shuffle(flashState.items);
+  flashState.current = 0;
+  flashState.flipped = false;
+  renderFlash();
+}
+
+function toggleLearnedFlash() {
+  const item = flashState.items[flashState.current];
+  const key = item.rovidit + '|' + item.kifejez;
+  progress.learned[key] = !progress.learned[key];
+  saveProgress();
+  renderFlash();
+  updateHomeStats();
+}
+
+// ===== LEARNED MARKING =====
+function markLearned(rovidit, kifejez) {
+  const key = rovidit + '|' + kifejez;
+  if (!progress.learned[key]) {
+    progress.learned[key] = true;
+    saveProgress();
+  }
+}
+
+// ===== STREAK =====
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (progress.lastDate !== today) {
+    if (progress.lastDate) {
+      const last = new Date(progress.lastDate);
+      const now = new Date();
+      const diff = Math.floor((now - last) / 86400000);
+      if (diff === 1) progress.streak++;
+      else if (diff > 1) progress.streak = 1;
+    } else {
+      progress.streak = 1;
+    }
+    progress.lastDate = today;
+  }
+  saveProgress();
+}
+
+// ===== DICTIONARY =====
+let dictFilter = 'all';
+
+function initDict() {
+  const colors = [...new Set(DATA.map(d => d.szin))];
+  const filtersHtml = `
+    <div class="dict-filter active" data-filter="all" onclick="setDictFilter('all',this)">Összes</div>
+    ${colors.map(c => `<div class="dict-filter ${colorClass(c)}" data-filter="${c}" onclick="setDictFilter('${c}',this)">${c}</div>`).join('')}
+    <div class="dict-filter" data-filter="learned" onclick="setDictFilter('learned',this)">⭐ Megtanult</div>`;
+  document.getElementById('dict-filters').innerHTML = filtersHtml;
+}
+
+function setDictFilter(filter, el) {
+  dictFilter = filter;
+  document.querySelectorAll('.dict-filter').forEach(f => f.classList.remove('active'));
+  el.classList.add('active');
+  renderDict();
+}
+
+function renderDict() {
+  const query = document.getElementById('dict-search').value.toLowerCase().trim();
+  let filtered = DATA.filter(d => {
+    if (dictFilter !== 'all' && dictFilter !== 'learned' && d.szin !== dictFilter) return false;
+    if (dictFilter === 'learned' && !progress.learned[d.rovidit + '|' + d.kifejez]) return false;
+    if (query) {
+      return d.rovidit.toLowerCase().includes(query) ||
+             d.kifejez.toLowerCase().includes(query) ||
+             (d.megjegyz && d.megjegyz.toLowerCase().includes(query));
+    }
+    return true;
+  });
+
+  document.getElementById('dict-count').textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    document.getElementById('dict-list').innerHTML = `
+      <div class="empty-state">
+        <div class="emoji">🔍</div>
+        <p>Nincs találat</p>
+      </div>`;
+    return;
+  }
+
+  // Group by first letter
+  const groups = {};
+  filtered.forEach(d => {
+    const letter = d.rovidit[0].toUpperCase();
+    if (!groups[letter]) groups[letter] = [];
+    groups[letter].push(d);
+  });
+
+  let html = '';
+  Object.keys(groups).sort().forEach(letter => {
+    html += `<div class="dict-letter-header">${letter}</div>`;
+    groups[letter].forEach(d => {
+      const isLearned = progress.learned[d.rovidit + '|' + d.kifejez];
+      const cc = colorClass(d.szin);
+      html += `
+        <div class="dict-card ${cc}" onclick="toggleDictLearned('${escHtml(d.rovidit)}','${escHtml(d.kifejez)}',this)">
+          <div class="dict-abbr-row">
+            <span class="dict-abbr">${escHtml(d.rovidit)}</span>
+            <span class="dict-color-tag ${cc}">${escHtml(d.szin)}</span>
+            <span class="learned-chip ${isLearned ? '' : 'not'}" style="margin-left:auto">
+              ${isLearned ? '⭐ Megtanult' : '☆'}
+            </span>
+          </div>
+          <div class="dict-expr"><em>${escHtml(d.kifejez)}</em></div>
+          ${d.megjegyz ? `<div class="dict-note">💡 ${escHtml(d.megjegyz)}</div>` : ''}
+        </div>`;
+    });
+  });
+
+  document.getElementById('dict-list').innerHTML = html;
+}
+
+function toggleDictLearned(rovidit, kifejez, cardEl) {
+  const key = rovidit + '|' + kifejez;
+  progress.learned[key] = !progress.learned[key];
+  saveProgress();
+  updateHomeStats();
+
+  // Update chip in place
+  const chip = cardEl.querySelector('.learned-chip');
+  if (chip) {
+    chip.classList.toggle('not', !progress.learned[key]);
+    chip.textContent = progress.learned[key] ? '⭐ Megtanult' : '☆';
+  }
+
+  if (dictFilter === 'learned') renderDict();
+}
+
+// ===== SWIPE GESTURE FOR FLASHCARDS =====
+let touchStartX = 0, touchStartY = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', e => {
+  if (currentMode !== 'flash' || !document.getElementById('screen-flash').classList.contains('active')) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 60) {
+    if (dx < 0) flashNav(1);
+    else flashNav(-1);
+  }
+}, { passive: true });
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
